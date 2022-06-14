@@ -1,7 +1,7 @@
-import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
+import { Text } from "react-native";
 
 const ManageExpense = () => {
-  return <ExpensesOutput expensesPeriod="Last 7 Days" />;
+  return <Text>Manage Expense Screen</Text>;
 };
 
 export default ManageExpense;
