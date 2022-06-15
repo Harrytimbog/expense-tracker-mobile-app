@@ -7,10 +7,14 @@ import { GlobalStyles } from "../constants/styles";
 import { ExpensesContext } from "../store/expenses-context";
 
 const ManageExpense = ({ route, navigation }) => {
-  const expenseCtx = useContext(ExpensesContext);
+  const expensesCtx = useContext(ExpensesContext);
   const editedExpenseId = route.params?.expenseId;
 
   const isEditing = !!editedExpenseId; // Javascrpt trick to convert a value to a boolean (falsy value to false, truthy value to true)
+
+  const selectedExpense = expensesCtx.expenses.find(
+    (expense) => expense.id === editedExpenseId
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -19,7 +23,7 @@ const ManageExpense = ({ route, navigation }) => {
   }, [navigation, isEditing]);
 
   function deleteExpenseHandler() {
-    expenseCtx.deleteExpense(editedExpenseId);
+    expensesCtx.deleteExpense(editedExpenseId);
     navigation.goBack();
   }
 
@@ -29,9 +33,9 @@ const ManageExpense = ({ route, navigation }) => {
 
   function confirmHandler(expenseData) {
     if (isEditing) {
-      expenseCtx.updateExpense(editedExpenseId, expenseData);
+      expensesCtx.updateExpense(editedExpenseId, expenseData);
     } else {
-      expenseCtx.addExpense(expenseData);
+      expensesCtx.addExpense(expenseData);
     }
     navigation.goBack();
   }
@@ -42,6 +46,7 @@ const ManageExpense = ({ route, navigation }) => {
         submitButtonLabel={isEditing ? "Update" : "Add"}
         onCancel={CancelHandler}
         onSubmit={confirmHandler}
+        defaultValues={selectedExpense}
       />
       {isEditing && (
         <View style={styles.deleteContainer}>
